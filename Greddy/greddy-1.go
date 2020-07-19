@@ -5,6 +5,9 @@ import (
 	"github.com/shuff1e/code-review/DataStructure/BinaryTree"
 )
 
+// 给定来自字母表A的n个字符的集合，已知每个字符出现的频率freq(c)
+// 为每一个字符找到一个二进制编码，使得 freq(c)*Length(binarycode(c))的值最小
+// 其中Length(binarycode(c))表示字符c的二进制编码的长度
 type MyInt int
 
 func (m MyInt) CompareTo(other interface{}) int {

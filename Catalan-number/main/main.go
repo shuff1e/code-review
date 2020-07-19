@@ -6,5 +6,8 @@ import (
 )
 
 func main() {
-	fmt.Println(Catalan_number.BSTNumber(7))
+	//fmt.Println(Catalan_number.BSTNumber(7))
+	// catalan-4
+	str := "(())())(())())()"
+	fmt.Println(Catalan_number.GetMaxLength(str))
 }

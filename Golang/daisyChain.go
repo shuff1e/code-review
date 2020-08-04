@@ -22,3 +22,8 @@ func DaisyChain(arr []int) {
 	go func(c chan int){c <- 0}(leftMost)
 	fmt.Println(<- right)
 }
+
+// 优先 channel
+// 其次 atomic
+// 其次 mutex，cond
+// https://www.bwangel.me/2019/04/13/go-sync-channel/

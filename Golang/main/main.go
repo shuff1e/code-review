@@ -1,10 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"github.com/shuff1e/code-review/Golang"
-	"time"
-)
+import "github.com/shuff1e/code-review/Golang"
 
 func main() {
 	//arr := []int{1,2,3,4,5,6,7}
@@ -32,14 +28,34 @@ func main() {
 	//go func() {
 	//	fmt.Println(<-docker)
 	//}()
-	go Golang.FillToken()
-	go func() {
-		for {
-			result := Golang.TakeAvailable(false)
-			fmt.Println(result)
-			time.Sleep(time.Second)
-		}
-	}()
+	//go Golang.FillToken()
+	//go func() {
+	//	for {
+	//		result := Golang.TakeAvailable(false)
+	//		fmt.Println(result)
+	//		time.Sleep(time.Second)
+	//	}
+	//}()
+	//threadNum := 5
+	//for i := 0;i<threadNum;i++ {
+	//	Golang.Wg.Add(1)
+	//	go Golang.IncCounter(i)
+	//}
+	//Golang.Wg.Wait()
+	//fmt.Println(Golang.Counter)
+	//Golang.Test5()
+	//time.Sleep(time.Second*3)
+	//var wg sync.WaitGroup
+	//for i := 0;i<10;i++ {
+	//	wg.Add(1)
+	//	go func() {
+	//		defer wg.Done()
+	//		Golang.Incr()
+	//	}()
+	//}
+	//wg.Wait()
+	done := make(chan struct{})
+	Golang.Test6()
+	<- done
 
-	<- make(chan bool)
 }

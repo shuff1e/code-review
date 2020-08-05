@@ -1,6 +1,13 @@
 package main
 
-//func main() {
+import (
+	"fmt"
+	"github.com/shuff1e/code-review/Golang"
+	"math/rand"
+	"time"
+)
+
+func main() {
 	//arr := []int{1,2,3,4,5,6,7}
 	//Golang.DaisyChain(arr)
 	//ch := make(chan int,100)
@@ -77,32 +84,27 @@ package main
 	//Golang.Test7()
 	//mutex := sync.Mutex{}
 	//mutex.Unlock()
-
-
-//}
-
-
-import "fmt"
-
-type point struct {
-	str string
-	num []int
-}
-
-func main() {
-	fmt.Println("hello")
-	test()
-}
-
-
-func test() (pt point){
-	fmt.Printf("%#v\n",pt)
-	fmt.Println(pt.num == nil)
-	tt := make([]int,0)
-	fmt.Println(tt == nil)
-	pt.str="sun"
-	// append无法更改值。
-	pt.num = append(pt.num, 4)
-	fmt.Printf("slice=%s\n",pt.str)
-	return
+	//c := Golang.Boring("boring")
+	//c := Golang.FanIn(Golang.Boring("Joe"),Golang.Boring("Ann"))
+	//for i :=0;i<10;i++ {
+	//	msg1 := <-c;fmt.Println(msg1.Str)
+	//	msg2 := <-c;fmt.Println(msg2.Str)
+		//fmt.Printf("you sat %q\n", <-c)
+		//msg1.Wait <- true
+		//msg2.Wait <- true
+	//}
+	//fmt.Println("you are boring,i am leaving")
+	//
+	//ch := make(chan int)
+	//close(ch)
+	//select {
+	//case <- ch:
+	//	fmt.Println("fuck")
+	//}
+	rand.Seed(time.Now().UnixNano())
+	start := time.Now()
+	results := Golang.Google("golang")
+	elapsed := time.Since(start)
+	fmt.Println(results)
+	fmt.Println(elapsed)
 }

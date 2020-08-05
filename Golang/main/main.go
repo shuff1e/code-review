@@ -1,8 +1,6 @@
 package main
 
-import "github.com/shuff1e/code-review/Golang"
-
-func main() {
+//func main() {
 	//arr := []int{1,2,3,4,5,6,7}
 	//Golang.DaisyChain(arr)
 	//ch := make(chan int,100)
@@ -54,8 +52,57 @@ func main() {
 	//	}()
 	//}
 	//wg.Wait()
-	done := make(chan struct{})
-	Golang.Test6()
-	<- done
+	//done := make(chan struct{})
+	//Golang.Test6()
+	//indexes := make([]int,10)
+	//for i := 0;i<len(indexes);i++ {
+	//	indexes[i] = i
+	//}
+	//Golang.Shuffle(indexes)
+	//fmt.Printf("%#v\n",indexes)
+	//
+	//<- done
+	//	pool := Golang.NewPool(100)
+	//	println(runtime.NumGoroutine())
+	//	for i:=0;i<1000;i++ {
+	//		pool.Add(1)
+	//		go func() {
+	//			time.Sleep(time.Second)
+	//			println(runtime.NumGoroutine())
+	//			pool.Done()
+	//		}()
+	//	}
+	//	pool.Wait()
+	//	println(runtime.NumGoroutine())
+	//Golang.Test7()
+	//mutex := sync.Mutex{}
+	//mutex.Unlock()
 
+
+//}
+
+
+import "fmt"
+
+type point struct {
+	str string
+	num []int
+}
+
+func main() {
+	fmt.Println("hello")
+	test()
+}
+
+
+func test() (pt point){
+	fmt.Printf("%#v\n",pt)
+	fmt.Println(pt.num == nil)
+	tt := make([]int,0)
+	fmt.Println(tt == nil)
+	pt.str="sun"
+	// append无法更改值。
+	pt.num = append(pt.num, 4)
+	fmt.Printf("slice=%s\n",pt.str)
+	return
 }

@@ -1,12 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"github.com/shuff1e/code-review/Golang"
-	"math/rand"
-	"time"
-)
-
 func main() {
 	//arr := []int{1,2,3,4,5,6,7}
 	//Golang.DaisyChain(arr)
@@ -101,10 +94,13 @@ func main() {
 	//case <- ch:
 	//	fmt.Println("fuck")
 	//}
-	rand.Seed(time.Now().UnixNano())
-	start := time.Now()
-	results := Golang.Google("golang")
-	elapsed := time.Since(start)
-	fmt.Println(results)
-	fmt.Println(elapsed)
+	//rand.Seed(time.Now().UnixNano())
+	//start := time.Now()
+	//results := Golang.Google("golang")
+	//elapsed := time.Since(start)
+	//fmt.Println(results)
+	//fmt.Println(elapsed)
+	//arr := []int{}
+	//arr = append(arr,0)
+	//fmt.Printf("%#v\n",arr)
 }

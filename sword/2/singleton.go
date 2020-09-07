@@ -6,9 +6,10 @@ import (
 	"sync/atomic"
 )
 
-// 实现一个单例类
+// 面试题2：实现Singleton模式
+// 题目：设计一个类，我们只能生成该类的一个实例。
 
-// sync.Once
+// A：实现一个单例类，即实现 sync.Once
 
 // atomic 提供的原子操作能够确保任一时刻只有一个goroutine对变量进行操作，
 // 善用 atomic 能够避免程序中出现大量的锁操作。

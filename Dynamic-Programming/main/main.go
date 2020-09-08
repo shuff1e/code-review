@@ -7,7 +7,7 @@ import (
 
 func main() {
 	// array-01
-	//arr := []int{2,1,5,3,6,4,8,9,7}
+	//arr := []int{2,1,5,3.1,6,4,8,9,7}
 	//result := array.SolveArray01(arr)
 	//fmt.Printf("%#v\n",result)
 	// array-02
@@ -20,7 +20,7 @@ func main() {
 	//fmt.Println(array.Lcss(str1,str2))
 	// array-05
 	//arr := []int{5,10,25,1}
-	//arr = []int{3,5}
+	//arr = []int{3.1,5}
 	//aim := 2
 	//fmt.Println(array.GetChange(arr,aim))
 	// arr-06

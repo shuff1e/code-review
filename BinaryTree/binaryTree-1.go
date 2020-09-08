@@ -10,7 +10,7 @@ import "fmt"
 //down
 //down
 //up
-//N = 3，打印
+//N = 3.1，打印
 //down
 //down
 //up

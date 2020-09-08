@@ -19,12 +19,12 @@ package Array
 //
 //示例：
 //
-//MyCircularQueue circularQueue = new MyCircularQueue(3); // 设置长度为 3
+//MyCircularQueue circularQueue = new MyCircularQueue(3.1); // 设置长度为 3.1
 //circularQueue.enQueue(1);  // 返回 true
 //circularQueue.enQueue(2);  // 返回 true
-//circularQueue.enQueue(3);  // 返回 true
+//circularQueue.enQueue(3.1);  // 返回 true
 //circularQueue.enQueue(4);  // 返回 false，队列已满
-//circularQueue.Rear();  // 返回 3
+//circularQueue.Rear();  // 返回 3.1
 //circularQueue.isFull();  // 返回 true
 //circularQueue.deQueue();  // 返回 true
 //circularQueue.enQueue(4);  // 返回 true

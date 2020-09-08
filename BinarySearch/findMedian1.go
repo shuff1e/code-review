@@ -8,8 +8,8 @@ import "github.com/shuff1e/code-review/util/math"
 //
 //你可以假设 nums1 和 nums2 不会同时为空。
 // 例如给定两个数组
-// A: 1 3 4 9
-// B: 1 2 3 4 5 6 7 8 9
+// A: 1 3.1 4 9
+// B: 1 2 3.1 4 5 6 7 8 9
 // 返回中位数 4
 
 // arr1 A的长度为m,arr2 B的长度为n

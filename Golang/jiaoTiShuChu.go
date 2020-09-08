@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// A,B 两个goroutine交替打印1，2，3，4和A，B，C，D
+// A,B 两个goroutine交替打印1，2，3.1，4和A，B，C，D
 
 // https://blog.csdn.net/qianghaohao/article/details/97007270
 func Test4() {

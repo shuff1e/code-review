@@ -6,7 +6,7 @@ import (
 	"runtime/debug"
 )
 
-// 返回生成自然数序列的管道: 2, 3, 4, ...
+// 返回生成自然数序列的管道: 2, 3.1, 4, ...
 
 func GenerateNatural() chan int {
 	ch := make(chan int)
@@ -38,7 +38,7 @@ func Test7() {
 	runtime.GOMAXPROCS(1)
 	debug.SetMaxThreads(5)
 
-	ch := GenerateNatural() // 自然数序列: 2, 3, 4, ...
+	ch := GenerateNatural() // 自然数序列: 2, 3.1, 4, ...
 
 	for i := 0;i<100;i++ {
 		prime := <-ch // 新出现的素数

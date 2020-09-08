@@ -35,6 +35,7 @@ func printRecursively(n *Node) {
 }
 
 func main() {
+	// 1->2->3->4->5
 	root := &Node{value: "1"}
 	root.next = &Node{value: "2"}
 	root.next.next = &Node{value: "3"}

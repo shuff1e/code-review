@@ -16,6 +16,7 @@ type Node struct {
 	right *Node
 	value int
 }
+
 func construct(preOrder []int,midOrder []int) *Node {
 	// 为空
 	if len(preOrder) == 0 {
@@ -52,13 +53,55 @@ func findIndex(arr []int,n int) int {
 }
 
 func main() {
+	// 普通二叉树
+	//              1
+	//           /     \
+	//          2       3
+	//         /       / \
+	//        4       5   6
+	//         \         /
+	//          7       8
 	preOrder := []int{1, 2, 4, 7, 3, 5, 6, 8}
 	midOrder := []int{4, 7, 2, 1, 5, 3, 8, 6}
-	node := construct(preOrder,midOrder)
+	node := construct(preOrder, midOrder)
 	fmt.Println(node.value)
 
+	// 所有结点都没有右子结点
+	//            1
+	//           /
+	//          2
+	//         /
+	//        3
+	//       /
+	//      4
+	//     /
+	//    5
 	preOrder = []int{1, 2, 3, 4, 5}
 	midOrder = []int{5, 4, 3, 2, 1}
+	node = construct(preOrder, midOrder)
+	fmt.Println(node.value)
+	// 所有结点都没有左子结点
+	//            1
+	//             \
+	//              2
+	//               \
+	//                3
+	//                 \
+	//                  4
+	//                   \
+	//                    5
+	preOrder = []int{1, 2, 3, 4, 5}
+	midOrder = []int{1, 2, 3, 4, 5}
+	node = construct(preOrder, midOrder)
+	fmt.Println(node.value)
+	// 完全二叉树
+	//              1
+	//           /     \
+	//          2       3
+	//         / \     / \
+	//        4   5   6   7
+	preOrder = []int{1, 2, 4, 5, 3, 6, 7}
+	midOrder = []int{4, 2, 5, 1, 6, 3, 7}
 	node = construct(preOrder,midOrder)
 	fmt.Println(node.value)
 }

@@ -39,4 +39,5 @@ func String(arr []byte) string {
 }
 func main() {
 	fmt.Println(replace("we are happy."))
+	fmt.Println(replace("   "))
 }

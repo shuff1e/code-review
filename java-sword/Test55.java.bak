@@ -1,0 +1,75 @@
+public class Test55 
+{
+	public static int getTreeDepth(BinaryTree root)
+	{
+		if (root==null)
+		{
+			return 0;
+		}
+		int left=getTreeDepth(root.left);
+		int right=getTreeDepth(root.right);
+		return left>right?(left+1):(right+1);
+	}
+	public static void main(String[] args) 
+	{
+		BinaryTree node1=new BinaryTree(8);
+		BinaryTree left=new BinaryTree(8);
+		BinaryTree right=new BinaryTree(7);
+		node1.left=left;
+		node1.right=right;
+		BinaryTree temp=new BinaryTree(9);
+		left.left=temp;
+		temp=new BinaryTree(2);
+		left.right=temp;
+		left=new BinaryTree(4);
+		right=new BinaryTree(7);
+		temp.left=left;
+		temp.right=right;
+		////////////////////////P148
+		BinaryTree root=new BinaryTree(8);
+		System.out.println(getTreeDepth(root));
+		System.out.println(isBalanced(node1));
+	}
+	public static boolean isBalanced(BinaryTree root)
+	{
+		if (root==null)
+		{
+			return true;
+		}
+		int left=getTreeDepth(root.left);
+		int right=getTreeDepth(root.right);
+		if ((int)Math.abs(left-right)>1)
+		{
+			return false;
+		}
+		return isBalanced(root.left)&&isBalanced(root.right);
+	}
+	public static boolean isBalanced(BinaryTree root,Wrapper wra)
+	{
+		if (root==null)
+		{
+			wra.k=0;
+			return true;
+		}
+		Wrapper left=new Wrapper(0);
+		Wrapper right=new Wrapper(0);
+		if (isBalanced(root.left,left)&&isBalanced(root.right,right))
+		{
+			int diff=(int)Math.abs(left.k-right.k);
+			if (diff<=1)
+			{
+				wra.k=Math.max(left.k,right.k)+1;
+				return true;
+			}
+		}
+		return false;
+	}
+}
+class Wrapper
+{
+	public int k;
+	public Wrapper(int k)
+	{
+		this.k=k;
+	}
+}

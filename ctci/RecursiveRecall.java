@@ -1,0 +1,59 @@
+import java.util.*;
+public class RecursiveRecall 
+{
+	public static boolean isSortedCore(int[] arr,int index)
+	{
+		if (index==0)
+		{
+			return true;
+		}
+		return arr[index]<arr[index-1]?false:isSortedCore(arr,index-1);
+	}
+	public static boolean isSorted(int[] arr)
+	{
+		int len=arr.length;
+		return isSortedCore(arr,len-1);
+	}
+	public static void printBinaryCore(int[] arr,int index)
+	{
+		if (index<0)
+		{
+			System.out.println(Arrays.toString(arr));
+			return;
+		}
+		arr[index]=0;
+		printBinaryCore(arr,index-1);
+		arr[index]=1;
+		printBinaryCore(arr,index-1);
+	}
+	public static void printBinary(int n)
+	{
+		int[] arr=new int[n];
+		printBinaryCore(arr,arr.length-1);
+	}
+	public static void kStringCore(int[] arr,int index,int k)
+	{
+		if (index<0)
+		{
+			System.out.println(Arrays.toString(arr));
+			return;
+		}
+		for (int i=0;i<k ;i++ )
+		{
+			arr[index]=i;
+			kStringCore(arr,index-1,k);
+		}
+	}
+	public static void kString(int n,int k)
+	{
+		int[] arr=new int[n];
+		kStringCore(arr,arr.length-1,k);
+	}
+	public static void main(String[] args) 
+	{
+		//printBinary(4);
+		//int[] arr=new int[]{1,5,6,7,8,9};
+		//System.out.println(isSorted(arr));
+		kString(3,6);
+	}
+}

@@ -1,0 +1,58 @@
+import java.util.*;
+public class Test59Afiiliated 
+{
+	private class Data
+	{
+		int number;
+		int index;
+		protected Data(int n,int i)
+		{
+			number=n;
+			index=i;
+		}
+	}
+	private Deque<Data> data=new ArrayDeque<>();
+	private Deque<Data> max=new ArrayDeque<>();
+	private int curIndex;
+	void addLast(int number)
+	{
+		while (!max.isEmpty()&&number>=max.peekLast().number)
+		{
+			max.removeLast();
+		}
+		Data d=new Data(number,curIndex);
+		data.addLast(d);
+		max.addLast(d);
+		curIndex++;
+	}
+	int removeFirst()
+	{
+		if (max.isEmpty())
+		{
+			throw new RuntimeException();
+		}
+		if (max.peekFirst().index==data.peekFirst().index)
+		{
+			max.removeFirst();
+		}
+		return data.removeFirst().number;
+	}
+	int getMax()
+	{
+		if (max.isEmpty())
+		{
+			throw new RuntimeException();
+		}
+		return max.peekFirst().number;
+	}
+	public static void main(String[] args) 
+	{
+		Test59Affiliated t=new Test59Affiliated();
+		int[] arr=new int[]{2,3,4,2,6,2,5,1};
+		for (int i=0;i<arr.length ;i++ )
+		{
+			t.addLast(arr[i]);
+		}
+		System.out.println(t.max());
+	}
+}

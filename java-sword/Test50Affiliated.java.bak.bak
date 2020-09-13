@@ -1,0 +1,47 @@
+public class Test50Affiliated 
+{
+	private static int index=0;
+	private static int[] arr=new int[256];
+	static
+	{
+		for (int i=0;i<arr.length ;i++ )
+		{
+			arr[i]=-1;
+		}
+	}
+	public static void insert(char ch)
+	{
+		if (arr[ch]==-1)
+		{
+			arr[ch]=index;
+		}
+		else if (arr[ch]>=0)
+		{
+			arr[ch]=-2;
+		}
+		index++;
+	}
+	public static char get()
+	{
+		char ch='\0';
+		int min=Integer.MAX_VALUE;
+		for (int i=0;i<arr.length ;i++ )
+		{
+			if (arr[i]>=0&&arr[i]<min)
+			{
+				min=arr[i];
+				ch=(char)i;
+			}
+		}
+		return ch;
+	}
+	public static void main(String[] args) 
+	{
+		String str="gozogllee";
+		for (int i=0;i<str.length() ;i++ )
+		{
+			insert(str.charAt(i));
+		}
+		System.out.println(get());
+	}
+}

@@ -1,0 +1,64 @@
+import java.util.*;
+public class Test62
+{
+	public static int lastRemaining(int n,int m)
+	{
+		if (n<1||m<1)
+		{
+			return -1;
+		}
+		LinkedList<Integer> list=new LinkedList<>();
+		for (int i=0;i<n ;i++ )
+		{
+			list.add(i);
+		}
+		int cur=0;
+		while (list.size()>1)
+		{
+			for (int i=1;i<m ;i++ )
+			{
+				cur++;
+				if (cur==list.size())
+				{
+					cur=0;
+				}
+			}
+			int next=cur+1;
+			if (next==list.size())
+			{
+				next=0;
+			}
+			int temp=list.get(next);
+			list.remove(cur);
+			cur=list.indexOf(temp);
+		}
+		return list.get(0);
+	}
+	public static void main(String[] args) 
+	{
+		System.out.println(lastRemaining(5,5));
+		System.out.println(last(5,5));
+		System.out.println(last2(5,5));
+	}
+	public static int last(int n,int m)
+	{
+		if (n==1)
+		{
+			return 0;
+		}
+		return (last(n-1,m)+m)%n;
+	}
+	public static int last2(int n,int m)
+	{
+		if (n<1||m<1)
+		{
+			return -1;
+		}
+		int last=0;
+		for (int i=2;i<=n ;i++ )
+		{
+			last=(last+m)%i;
+		}
+		return last;
+	}
+}

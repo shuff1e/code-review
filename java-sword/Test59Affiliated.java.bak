@@ -1,0 +1,86 @@
+import java.util.*;
+public class Test59Affiliated<T extends Comparable<T>>
+{
+	private class Data
+	{
+		protected T number;
+		protected int index;
+		protected Data(T n,int i)
+		{
+			number=n;
+			index=i;
+		}
+	}
+	private int curIndex;
+	private Deque<Data> major=new ArrayDeque<>();
+	private Deque<Data> maxHelper=new ArrayDeque<>();
+	private Deque<Data> minHelper=new ArrayDeque<>();
+
+	public void addLast(T number)
+	{
+		int maxCompare=number.compareTo(maxHelper.peekLast().number);
+		int minCompare=number.compareTo(minHelper.peekLast().number);
+		while (!maxHelper.isEmpty()&&(maxCompare>=0))
+		{
+			maxHelper.removeLast();
+		}
+		while (!minHelper.isEmpty()&&(minCompare<=0))
+		{
+			minHelper.removeLast();
+		}
+		Data data=new Data(number,curIndex);
+		major.addLast(data);
+		maxHelper.addLast(data);
+		minHelper.addLast(data);
+		curIndex++;
+	}
+	public T removeFirst()
+	{
+		if (maxHelper.isEmpty())
+		{
+			throw new RuntimeException("Empty");
+		}
+		int index=major.peekFirst().index;
+		if (maxHelper.peekFirst().index==index)
+		{
+			maxHelper.removeFirst();
+		}
+		if (minHelper.peekFirst().index==index)
+		{
+			minHelper.removeFirst();
+		}
+		return major.removeFirst().number;
+	}
+	public T getMax()
+	{
+		if (maxHelper.isEmpty())
+		{
+			throw new RuntimeException("Empty");
+		}
+		return maxHelper.peekFirst().number;
+	}
+	public T getMin()
+	{
+		if (minHelper.isEmpty())
+		{
+			throw new RuntimeException("Empty");
+		}
+		return minHelper.peekFirst().number;
+	}
+	public static void main(String[] args) 
+	{
+		Test59Affiliated<Integer> t=new Test59Affiliated<>();
+		int[] arr=new int[]{2,6,4,2,4,2,5,1};
+		arr=new int[]{1,2,3};
+		for (int i=0;i<arr.length ;i++ )
+		{
+			t.addLast(arr[i]);
+		}
+		System.out.println("max->"+t.getMax());
+		System.out.println("min->"+t.getMin());
+		System.out.println(+t.removeFirst());
+		t.addLast(10);
+		System.out.println("max->"+t.getMax());
+		System.out.println("min->"+t.getMin());
+	}
+}

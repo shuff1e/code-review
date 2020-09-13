@@ -1,0 +1,55 @@
+import java.util.*;
+public class TowerTest
+{
+	public static void main(String[] args) 
+	{
+		int n=5;
+		Tower[] towers=new Tower[3];
+		for (int i=0;i<3 ;i++ )
+		{
+			towers[i]=new Tower(i);
+		}
+		for (int i=n;i>0 ;i-- )
+		{
+			towers[0].add(i);
+		}
+		towers[0].moveDisks(n,towers[2],towers[1]);
+	}
+}
+class Tower
+{
+	private int index;
+	private Deque<Integer> disks;
+	public Tower(int index)
+	{
+		this.index=index;
+		this.disks=new ArrayDeque<>();
+	}
+	public void add(int num)
+	{
+		if (!disks.isEmpty()&&disks.peekLast()<num)
+		{
+			System.out.println("Error "+num);
+		}
+		else
+		{
+			disks.push(num);
+		}
+	}
+	public void moveDisks(int n,Tower destination,Tower buffer)
+	{
+		if (n>0)
+		{
+			moveDisks(n-1,buffer,destination);
+		    moveLastTo(destination);
+		    buffer.moveDisks(n-1,destination,this);
+		}
+	}
+	private void moveLastTo(Tower destination)
+	{
+		int last=disks.pop();
+		destination.add(last);
+		System.out.println("move disk "+last+" from "
+		+this.index+" to "+destination.index);
+	}
+}

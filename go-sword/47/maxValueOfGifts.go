@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // 47：礼物的最大价值
 // 题目：在一个m×n的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值
@@ -68,4 +70,37 @@ func Test(name string,matrix [][]int,expected int) {
 	if getMaxValue(matrix,0,0) != expected {
 		panic("fuck")
 	}
+
+	//fmt.Println(getMaxValue2(matrix))
+	if getMaxValue2(matrix) != expected {
+		panic("fuck")
+	}
+}
+
+func getMaxValue2(matrix [][]int) int {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return 0
+	}
+
+	result := 0
+
+	helper := make([]int,len(matrix[0]))
+	helper[len(helper)-1] = matrix[len(matrix)-1][len(helper)-1]
+
+	result = Max(result,helper[len(helper)-1])
+
+	for j := len(helper) -2 ; j>=0; j-- {
+		helper[j] = helper[j+1] + matrix[len(matrix)-1][j]
+		result = Max(result,helper[j])
+	}
+
+	for i := len(matrix)-2;i>=0;i-- {
+		helper[len(helper)-1] += matrix[i][len(helper)-1]
+		result = Max(result,helper[len(helper)-1])
+		for j := len(helper)-2;j>=0;j-- {
+			helper[j] = Max(helper[j+1],helper[j]) + matrix[i][j]
+			result = Max(result,helper[j])
+		}
+	}
+	return result
 }

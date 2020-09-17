@@ -43,7 +43,7 @@ func getNumberOfOnes(num int) int {
 	// 23
 	// 3->13,14->23
 
-	// 55
+	// 55-1
 	// 5->15,15->25
 	highest := num /pow(10,count-1)
 	rest := num%pow(10,count-1)

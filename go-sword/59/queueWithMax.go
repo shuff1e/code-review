@@ -10,6 +10,9 @@ import (
 // 如果输入数组{2, 3, 4, 2, 6, 2, 5, 1}及滑动窗口的大小3，那么一共存在6个
 // 滑动窗口，它们的最大值分别为{4, 4, 6, 6, 6, 5}，
 
+// 定义一个队列，并实现函数max得到队列里的最大值，
+// 要求函数max，push_back 和 pop_front的时间复杂度都是O(1)
+
 // A：两个queue，一个存放数据，
 // 一个存放迄今为止的最大值
 // 例如，1，3，2，1
@@ -19,7 +22,9 @@ import (
 // 3出queue时，queue2的头部节点如果是3，则将3也出queue2
 
 type myQueue struct {
+	// data
 	queue1 *arraylist.List
+	// maximums
 	queue2 *arraylist.List
 	comparator Comparator
 }

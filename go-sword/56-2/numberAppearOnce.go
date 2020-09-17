@@ -22,6 +22,9 @@ func getNumber(arr []int) int32 {
 			bitMask = bitMask << 1
 		}
 	}
+	// 原码
+	// 反码
+	// 补码：反码加1称为补码
 	// 需要指定是	int32
 	// 不然不会按负数计算
 	var result int32 = 0

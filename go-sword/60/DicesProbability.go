@@ -38,6 +38,9 @@ func getNumber1(n ,level ,parentSum int,sumArr []int) {
 // n对应0
 // sum对应的位置为sum-n
 func printProbability1(n int) []float64 {
+	if n == 0{
+		return nil
+	}
 	sumArr := make([]int,global_max*n-n+1)
 	getNumber1(n,1,0,sumArr)
 	totalSum := Pow(global_max,n)
@@ -63,9 +66,21 @@ func Pow(base,exp int) int {
 }
 
 func main() {
-	arr1 := printProbability1(8)
-	arr2 := printProbability2(8)
-	fmt.Println(checkSame(arr1,arr2))
+	Test(1)
+	Test(2)
+	Test(3)
+	Test(4)
+
+	Test(11)
+	Test(0)
+}
+
+func Test(n int) {
+	arr1 := printProbability1(n)
+	arr2 := printProbability2(n)
+	if !checkSame(arr1,arr2) {
+		panic("fuck")
+	}
 }
 
 func checkSame(arr1,arr2 []float64) bool {
@@ -81,6 +96,9 @@ func checkSame(arr1,arr2 []float64) bool {
 }
 
 func printProbability2(n int) []float64 {
+	if n == 0 {
+		return nil
+	}
 	dp := make([]int,global_max*n+1)
 	// row
 

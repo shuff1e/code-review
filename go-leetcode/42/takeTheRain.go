@@ -75,7 +75,15 @@ func findMax(arr []int) int {
 }
 
 func main() {
-	fmt.Println(getWater3([]int{0,7,1,4,6}))
+	arr := []int{0,7,1,4,6}
+	fmt.Println(getWater3(arr))
+	fmt.Println(getWaterBetter(arr))
+	arr = []int{0,1,1,1,1,0,2,0,3,7,1,0,2,4,5}
+	fmt.Println(getWater3(arr))
+	fmt.Println(getWaterBetter(arr))
+	arr = []int{}
+	fmt.Println(getWater3(arr))
+	fmt.Println(getWaterBetter(arr))
 }
 
 //单调栈
@@ -126,33 +134,44 @@ func main() {
 //雨水的区域全部确定了，水坑的高度就是左右两边更低的一边减去底部，宽度是在左右中间
 //使用乘法即可计算面积
 
+// 单调栈，单调递减，如果arr[i]比栈中的数大，出栈，然后结算
+// 模板
+/*
+stack<int> st;
+for(int i = 0; i < nums.size(); i++)
+{
+	while(!st.empty() && st.top() < nums[i])
+	{
+		st.pop();
+	}
+	st.push(nums[i]);
+}
+ */
+
 func getWaterBetter(arr []int) int {
+	res := 0
 	stack := linkedliststack.New()
-	sum := 0
 	for i := 0;i<len(arr);i++ {
-		if stack.Empty() {
-			stack.Push(i)
-			continue
-		}
 		for {
-			temp,_ := stack.Peek()
-			if arr[temp.(int)] < arr[i] {
-				// 结算这个柱子
-				// 高度为两边最小的，减去中间的高度
-				stack.Pop()
-				if stack.Empty() {
-					break
-				}
-				l,_ := stack.Peek()
-				height := Min(arr[l.(int)],arr[i]) - arr[temp.(int)]
-				sum += height * (i-l.(int)-1)
-			} else {
+			if stack.Empty() {
 				break
 			}
+			temp,_ := stack.Peek()
+			if arr[temp.(int)] >= arr[i] {
+				break
+			}
+			stack.Pop()
+
+			if stack.Empty() {
+				break
+			}
+			temp2,_ := stack.Peek()
+			height := Min(arr[temp2.(int)],arr[i]) - arr[temp.(int)]
+			res += height * (i - 1 - temp2.(int))
 		}
 		stack.Push(i)
 	}
-	return sum
+	return res
 }
 
 func Min(x,y int) int {

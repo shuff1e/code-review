@@ -1,10 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"github.com/emirpasic/gods/stacks/linkedliststack"
-)
-
 //给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 //
 //求在该柱状图中，能够勾勒出来的矩形的最大面积。
@@ -40,13 +35,16 @@ func largestRectangleArea(heights []int) int {
 	return getMaxRectan(heights)
 }
 
+// 单调栈，出栈的时候，结算
+// 单调递增，可以相等，遇到第一个小的元素的时候，就知道左右边界
+// 然后计算面积
 func getMaxRectan(arr []int) int {
-	// 如果是单调递增的，没有出栈的机会
-	// 不会计算面积，因此加上一个最小值0
 	res := 0
+	stack := NewStack()
+	// 如果单调递增的，没法出栈
+	// 因此结尾搞个0
 	arr = append(arr,0)
-	stack := linkedliststack.New()
-	for i := 0;i<len(arr);i++ {
+	for i:=0;i<len(arr);i++ {
 		for {
 			if stack.Empty() {
 				break
@@ -70,15 +68,52 @@ func getMaxRectan(arr []int) int {
 }
 
 func Max(x,y int) int {
-	if x > y {
+	if x > y{
 		return x
 	}
 	return y
 }
 
-func main() {
-	arr := []int{2,1,5,6,2,3}
-	arr = []int{1,2,3,4,5,6}
-	arr = []int{1}
-	fmt.Println(getMaxRectan(arr))
+type Stack struct {
+	s []interface{}
+}
+
+func NewStack() *Stack {
+	return &Stack{
+		make([]interface{},0),
+	}
+}
+
+func (s *Stack) Push(v interface{}) {
+	s.s = append(s.s,v)
+}
+
+func (s *Stack) Pop() (interface{},bool) {
+
+	l := len(s.s)
+	if l == 0 {
+		return 0, false
+	}
+
+	res := s.s[l-1]
+	s.s = s.s[:l-1]
+	return res, true
+}
+
+func (s *Stack) Peek() (interface{},bool) {
+
+	l := len(s.s)
+	if l == 0 {
+		return 0, false
+	}
+
+	return s.s[l-1],true
+}
+
+func (s *Stack) Length() int {
+	return len(s.s)
+}
+
+func (s *Stack) Empty() bool {
+	return s.Length() == 0
 }

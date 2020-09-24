@@ -24,6 +24,7 @@ import (
 func main() {
 	str := "A man, a plan, a canal: Panama"
 	str = "race a car"
+	str = "0P"
 	fmt.Println(isPalindrome(str))
 }
 
@@ -31,10 +32,10 @@ func isPalindrome(s string) bool {
 	left := 0
 	right := len(s) - 1
 	for left < right {
-		for !isChar(s[left]) {
+		for left <len(s) && !isCharOrNumber(s[left]) {
 			left ++
 		}
-		for !isChar(s[right]) {
+		for right >= 0 && !isCharOrNumber(s[right]) {
 			right --
 		}
 		if right <= left {
@@ -49,6 +50,7 @@ func isPalindrome(s string) bool {
 	return true
 }
 
-func isChar(x byte) bool {
-	return (x >= 'A' && x <= 'Z') || (x >= 'a' && x <= 'z')
+func isCharOrNumber(x byte) bool {
+	result := (x >= 'A' && x <= 'Z') || (x >= 'a' && x <= 'z') || (x >= '0' && x<= '9')
+	return result
 }

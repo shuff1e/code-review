@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 /*
 148. 排序链表
@@ -46,14 +48,14 @@ type ListNode struct {
 }
 
 func main() {
-	head := &ListNode{Val: 1}
-	head.Next = &ListNode{Val: 3}
-	head.Next.Next = &ListNode{Val: 7}
-	head.Next.Next.Next = &ListNode{Val: 4}
-	head.Next.Next.Next.Next = &ListNode{Val: 3}
-	head.Next.Next.Next.Next.Next = &ListNode{Val: 2}
+	head := &ListNode{Val: 4}
+	head.Next = &ListNode{Val: 2}
+	head.Next.Next = &ListNode{Val: 1}
+	head.Next.Next.Next = &ListNode{Val: 3}
+	//head.Next.Next.Next.Next = &ListNode{Val: 3}
+	//head.Next.Next.Next.Next.Next = &ListNode{Val: 2}
 	printList(head)
-	head = sortList(head)
+	head = sortListMerge(head)
 	printList(head)
 }
 
@@ -65,12 +67,10 @@ func printList(root *ListNode) {
 	fmt.Println("nil")
 }
 
-func sortList(head *ListNode) *ListNode {
-	// boundary
+func sortListMerge(head *ListNode) *ListNode {
 	if head == nil || head.Next == nil {
 		return head
 	}
-
 	// split
 	slow,fast := head,head
 	for fast != nil && fast.Next != nil && fast.Next.Next != nil {
@@ -80,32 +80,120 @@ func sortList(head *ListNode) *ListNode {
 	next := slow.Next
 	slow.Next = nil
 
-	// sorted left and right
-	left := sortList(head)
-	right := sortList(next)
-
-	// merge
+	left := sortListMerge(head)
+	right := sortListMerge(next)
 	result := &ListNode{
-		Val: 0,
+		Val: -1,
 	}
 	temp := result
 	for left != nil && right != nil {
-		if left.Val <= right.Val {
-			temp.Next = left
+		if left.Val < right.Val {
+			result.Next = left
+
 			left = left.Next
-			temp = temp.Next
+			result = result.Next
 		} else {
-			temp.Next = right
+			result.Next = right
+
 			right = right.Next
-			temp = temp.Next
+			result = result.Next
 		}
 	}
-
 	if left != nil {
-		temp.Next = left
+		result.Next = left
 	}
 	if right != nil {
-		temp.Next = right
+		result.Next = right
 	}
-	return result.Next
+	return temp.Next
+}
+
+
+func sortListQuick(head *ListNode) *ListNode {
+	result,_ := help(head)
+	return result
+}
+
+// partition
+func partition(head *ListNode) (*ListNode,*ListNode) {
+	tempPre := &ListNode{
+		Val: -1,
+	}
+	tempPre.Next = head
+	temp := head
+
+	headPre := &ListNode{
+		Val: -1,
+	}
+	headPre.Next = head
+
+	markPre := &ListNode{
+		Val: -1,
+	}
+	markPre.Next = head
+	mark := head
+
+	for temp != nil {
+		if temp.Val < head.Val {
+			mark = mark.Next
+			markPre = markPre.Next
+			// swap
+			a,b := swap(markPre,tempPre)
+			markPre = a
+			tempPre = b
+			mark = markPre.Next
+			temp = tempPre.Next
+		}
+		temp = temp.Next
+		tempPre = tempPre.Next
+	}
+	// swap
+	a,b := swap(headPre,markPre)
+	headPre = a
+	markPre = b
+	head = headPre.Next
+	mark = markPre.Next
+
+	return headPre.Next,mark
+}
+
+// 链表中，已知前驱，交换后面的节点
+func swap(a,b *ListNode) (*ListNode,*ListNode){
+	if a == b {
+		return a,b
+	}
+	if a.Next == b {
+		bNextNext := b.Next.Next
+		a.Next = b.Next
+		a.Next.Next = b
+		a.Next.Next.Next = bNextNext
+		return a,a.Next
+	} else {
+		aNext := a.Next
+		bNext := b.Next
+		aNextNext := a.Next.Next
+		bNextNext := b.Next.Next
+
+		a.Next = bNext
+		a.Next.Next = aNextNext
+		b.Next = aNext
+		b.Next.Next = bNextNext
+		return a,b
+	}
+}
+
+func help(head *ListNode) (*ListNode,*ListNode) {
+	if head == nil || head.Next == nil {
+		return head,head
+	}
+
+	head,tail := partition(head)
+
+	next := tail.Next
+	tail.Next = nil
+
+	head1,tail1 := help(head)
+	head2,tail2 := help(next)
+	tail1.Next = head2
+	return head1,tail2
 }

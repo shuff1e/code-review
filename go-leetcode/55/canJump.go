@@ -54,3 +54,31 @@ func help(nums []int,level int,memo []int) bool {
 	}
 	return result
 }
+
+// 贪心
+// 只要当前位置在rightMost之前，我们就可以用i+arr[i]来更新rightMost
+// 如果rightMost > len(arr)-1，就表示可以达到
+
+// [2, 3, 1, 1, 4]
+// [3, 2, 1, 0, 4]
+
+// lc:45
+func canJump2(nums []int) bool {
+	rightMost := 0
+	for i := 0;i<len(nums);i++ {
+		if rightMost >= i {
+			rightMost = Max(rightMost,i+nums[i])
+			if rightMost >= len(nums) -1 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func Max(x,y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}

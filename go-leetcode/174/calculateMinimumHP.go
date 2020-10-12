@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
 174. 地下城游戏
 一些恶魔抓住了公主（P）并将她关在了地下城的右下角。地下城是由 M x N 个房间组成的二维网格。
@@ -70,9 +72,55 @@ dp[i][j]=max(min(dp[i+1][j],dp[i][j+1])−dungeon(i,j),1)
 
  */
 
-func calculateMinimumHP(dungeon [][]int) int {
-	if len(dungeon) == 0 || len(dungeon[0]) == 0{
-		return 0
+func main() {
+	matrix := [][]int{{0,-2,3},
+		{-1,0,0},
+	{-3,-3,-2},
+	}
+	matrix = [][]int{
+		{-2,-3,3},
+		{-5,-10,1},
+		{10,30,-5},
+	}
+	dp := calculateMinimumHP(matrix)
+	path := getPath(dp)
+	fmt.Println(dp[0][0])
+	for i := 0;i<len(path);i++ {
+		fmt.Print(matrix[path[i][0]][path[i][1]],"->")
+	}
+	fmt.Println()
+}
+
+func getPath(matrix [][]int) [][]int {
+	result := [][]int{}
+	result = append(result,[]int{0,0})
+	i,j := 0,0
+	for ;i<len(matrix)-1;i++ {
+		for ;j<len(matrix[0])-1;j++ {
+			if matrix[i+1][j] < matrix[i][j+1] {
+				result = append(result,[]int{i+1,j})
+			} else {
+				result = append(result,[]int{i,j+1})
+			}
+		}
+	}
+	if i == len(matrix)-1 {
+		for ;j < len(matrix[0]);j++ {
+			result = append(result,[]int{i,j})
+		}
+	}
+	if j == len(matrix[0]) - 1 {
+		for ;i < len(matrix);i++ {
+			result = append(result,[]int{i,j})
+		}
+	}
+	return result
+}
+
+func calculateMinimumHP(dungeon [][]int) [][]int {
+	if len(dungeon) == 0 || len(dungeon[0]) == 0 {
+		//return 0
+		return nil
 	}
 	dp := make([][]int,len(dungeon))
 	for i := 0;i<len(dp);i++ {
@@ -94,7 +142,8 @@ func calculateMinimumHP(dungeon [][]int) int {
 			dp[i][j] = Max(min-dungeon[i][j],1)
 		}
 	}
-	return dp[0][0]
+	//return dp[0][0]
+	return dp
 }
 
 func Max(x,y int) int {

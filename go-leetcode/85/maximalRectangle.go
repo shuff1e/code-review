@@ -69,6 +69,7 @@ func getMaxArea(arr []int) int {
 	stack := []int{}
 	for i := 0;i<len(arr);i++ {
 		for len(stack) > 0 && arr[stack[len(stack)-1]] > arr[i] {
+			// arr[temp] == (i-1-left)
 			temp := stack[len(stack)-1]
 			stack = stack[0:len(stack)-1]
 			left := -1

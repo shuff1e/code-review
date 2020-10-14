@@ -1,5 +1,11 @@
 package main
 
+import (
+	"container/heap"
+	"fmt"
+	"sort"
+)
+
 /*
 
 218. 天际线问题
@@ -28,6 +34,104 @@ Buildings Skyline Contour
 
  */
 
-func getSkyline(buildings [][]int) [][]int {
+//type Interface interface {
+//	sort.Interface
+//	Push(x interface{}) // add x as element Len()
+//	Pop() interface{}   // remove and return element Len() - 1.
+//}
 
+//type Interface interface {
+	//Len() int
+	//Less(i, j int) bool
+	//Swap(i, j int)
+//}
+
+func main() {
+	matrix := [][]int{ {2, 9, 10}, {3, 7, 15}, {5, 12, 12}, {15, 20, 10}, {19, 24, 8} }
+	result := getSkyline(matrix)
+	for i := 0;i<len(result);i++ {
+		fmt.Printf("%#v\n",result[i])
+	}
 }
+
+// 线扫描法
+func getSkyline(buildings [][]int) [][]int {
+	result := [][]int{}
+	pairs := make([][2]int,len(buildings)*2)
+	index := 0
+	for _,v := range buildings {
+		// 左边的点
+		pairs[index] = [2]int{v[0],-v[2]}
+		index ++
+		// 右边的点
+		pairs[index] = [2]int{v[1],v[2]}
+		index ++
+	}
+	// 升序排列
+	sort.Slice(pairs,func(i,j int) bool {
+		if pairs[i][0] != pairs[j][0] {
+			return pairs[i][0] < pairs[j][0]
+		}
+		// 这样[2,-10]会排在[2,5]前面
+		return pairs[i][1] < pairs[j][1]
+	})
+	maxHeap := &intHeap{}
+	prev := 0
+	for _,pair := range pairs {
+		// 例如[0,-5] [2,5] [2,-10] [6,10]
+		//  pairs中的顺序为 [0,-5][2,-10][2,5][6,10]
+		// 左边的入heap
+		if pair[1] < 0 {
+			heap.Push(maxHeap,-pair[1])
+		} else {
+			for i := 0;i<maxHeap.Len();i++ {
+				if maxHeap.Get(i) == pair[1] {
+					heap.Remove(maxHeap,i)
+					break
+				}
+			}
+		}
+		top := maxHeap.Peek()
+		if prev != top {
+			result = append(result,[]int{pair[0],top})
+			prev = top
+		}
+	}
+	return result
+}
+
+type intHeap []int
+
+func (h intHeap) Len() int {return len(h)}
+func (h intHeap) Swap(i,j int) {
+	h[i],h[j] = h[j],h[i]
+}
+func (h intHeap) Less(i,j int) bool {
+	return h[i] > h [j] // > 表示最大堆，< 表示最小堆
+}
+
+
+
+func (h *intHeap) Push(x interface{}) {
+	*h = append(*h,x.(int))
+}
+
+
+
+func (h *intHeap) Pop() interface{} {
+	result := (*h)[len(*h)-1]
+	*h = (*h)[0:len(*h)-1]
+	return result
+}
+
+
+
+func (h intHeap) Peek() int {
+	if len(h) > 0{
+		return h[0]
+	}
+	return 0
+}
+
+func (h intHeap) Get(index int) int {return h[index]}
+

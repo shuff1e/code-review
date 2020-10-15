@@ -207,6 +207,7 @@ import (
 
 func main() {
 	tokens := []string{"4","13","5","/","+"}
+	tokens = []string{"1", "2", "3", "4", "+", "5", "+", "*" ,"5" ,"+" ,"/" ,"6" ,"-"}
 	fmt.Println(evalRPN(tokens))
 }
 

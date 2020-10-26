@@ -73,3 +73,50 @@ func reverseBetween(head *ListNode, m int, n int) *ListNode {
 	tail.Next = temp2
 	return pivot.Next
 }
+
+func reverseBetween2(head *ListNode, m int, n int) *ListNode {
+	// 1 2 3 4 5
+	//   2   4
+	// 1 2 3 4
+	// 1 2 3 4
+
+	dummy := &ListNode{}
+	dummy.Next = head
+
+	index := 1
+	temp := head
+	prev := dummy
+
+	for index < m {
+		temp = temp.Next
+		prev = prev.Next
+		index ++
+	}
+	for index < n {
+		index ++
+		temp = temp.Next
+	}
+
+	next := temp.Next
+	temp.Next = nil
+
+	temp = prev.Next
+	prev.Next = nil
+
+	h,t := reverse(temp)
+	prev.Next = h
+	t.Next = next
+	return dummy.Next
+}
+
+func reverse(node *ListNode) (*ListNode,*ListNode) {
+	temp := node
+	prev := (*ListNode)(nil)
+	for node != nil {
+		next := node.Next
+		node.Next = prev
+		prev = node
+		node = next
+	}
+	return prev,temp
+}

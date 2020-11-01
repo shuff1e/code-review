@@ -122,6 +122,8 @@ func Max(x,y int) int {
 
  */
 
+// 下面是自己写的错误答案
+
 /*
 func longestUnivaluePath(root *TreeNode) int {
 	if root == nil {

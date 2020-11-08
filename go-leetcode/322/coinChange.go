@@ -129,7 +129,7 @@ func Min(x,y int) int {
 // 当前index位置的钱一张不用，并且消耗掉当前index
 // 或者当前index位置的钱用掉一张，但是不消耗掉当前index(当前需要amount>=arr[index])
 
-
+// 换钱的方法数
 // dp[i][j] = Min(dp[i-1][j],dp[i][j-arr[i]]+1)
 
 func coinChangeBetter(coins []int, amount int) int {

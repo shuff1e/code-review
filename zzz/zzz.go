@@ -3,8 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	arr := []int{1,2,5,15,16,21}
-	fmt.Println(lowBound(arr,2))
+	arr := []int{1,1,2,2,9,13,15}
+	fmt.Println(lowBound(arr,5))
 }
 
 func lowBound(arr []int,x int ) int {

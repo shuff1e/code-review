@@ -81,9 +81,13 @@ func Test(arr []int,expected int) {
 	copy(arr2,arr)
 	cnt := reversePairs(arr2)
 
+	arr3 := make([]int,len(arr))
+	copy(arr3,arr)
+	cnt3 := reversePairsBit(arr3)
+
 	count := mergeSort(arr)
 	fmt.Printf("%#v\n",arr)
-	fmt.Println(count,expected,cnt)
+	fmt.Println(count,expected,cnt,cnt3)
 	if count != expected {
 		panic("fuck")
 	}
@@ -124,6 +128,9 @@ func reversePairs(nums []int) int {
 	return result
 }
 
+// 1,1,2,2,9,13,15
+// 查询2，返回index为3
+// 查询5，也返回index为3
 func lowBound(arr []int,x int ) int {
 	left := 0
 	right := len(arr)-1
@@ -253,3 +260,67 @@ int main(){
 }
 
  */
+
+type Bit struct {
+	n int
+	nodes []int
+}
+
+func lowBit(x int) int {
+	return x & (-x)
+}
+
+// 从上往下
+func (b *Bit) Query(x int) int {
+	result := 0
+	for x > 0 {
+		result += b.nodes[x]
+		x -= lowBit(x)
+	}
+	return result
+}
+
+func (b *Bit) Update(x int,delta int) {
+	for x <= b.n {
+		b.nodes[x] += delta
+		x += lowBit(x)
+	}
+}
+
+func NewBit(n int) *Bit {
+	return &Bit{
+		n: n,
+		nodes: make([]int,n+1),
+	}
+}
+
+func reversePairsBit(nums []int) int {
+	if len(nums) <= 1 {
+		return 0
+	}
+	// 离散化处理
+	dict := map[int]struct{}{}
+	for _,v := range nums {
+		dict[v] = struct{}{}
+	}
+	temp := []int{}
+	for k,_ := range dict {
+		temp = append(temp,k)
+	}
+
+	sort.Ints(temp)
+
+	for i := 0;i<len(nums);i++ {
+		nums[i] = lowBound(temp,nums[i]) + 1
+	}
+
+	//
+
+	result := 0
+	b := NewBit(len(temp))
+	for i := 0;i<len(nums);i++ {
+		result += b.Query(b.n) - b.Query(nums[i])
+		b.Update(nums[i],1)
+	}
+	return result
+}

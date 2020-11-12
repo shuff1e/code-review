@@ -30,7 +30,7 @@ A.length % 2 == 0
 
 func main() {
 	arr := []int{2,4,6,1,3,8,5,10,7,9}
-	sortArrayByParityII(arr)
+	sortArrayByParityII2(arr)
 	fmt.Printf("%#v\n",arr)
 }
 
@@ -40,6 +40,19 @@ func sortArrayByParityII(A []int) []int {
 		for (A[i] % 2 == 1 && i %2 ==0) || (A[i] % 2==0 && i % 2 == 1) {
 			mark ++
 			A[i],A[mark] = A[mark],A[i]
+		}
+	}
+	return A
+}
+
+func sortArrayByParityII2(A []int) []int {
+	i,j := 0,1
+	for ;i < len(A);i+=2 {
+		if A[i] % 2 == 1 {
+			for A[j] % 2 == 1 {
+				j += 2
+			}
+			A[i],A[j] = A[j],A[i]
 		}
 	}
 	return A

@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
 
 328. 奇偶链表
@@ -21,6 +23,18 @@ package main
 链表的第一个节点视为奇数节点，第二个节点视为偶数节点，以此类推。
 
  */
+
+func main() {
+	node := &ListNode{Val: 1}
+	node.Next = &ListNode{Val: 2}
+	node.Next.Next = &ListNode{Val: 3}
+	node.Next.Next.Next = &ListNode{Val: 4}
+	node.Next.Next.Next.Next = &ListNode{Val: 5}
+	//node.Next.Next.Next.Next.Next = &ListNode{Val: 6}
+
+	result := oddEvenList2(node)
+	fmt.Println(result)
+}
 
  type ListNode struct {
      Val int
@@ -57,4 +71,32 @@ func oddEvenList(head *ListNode) *ListNode {
 	prev1.Next = dummy2.Next
 	return dummy1.Next
 
+}
+
+func oddEvenList2(head *ListNode) *ListNode {
+	dummy1 := &ListNode{}
+	dummy2 := &ListNode{}
+
+	temp1 := dummy1
+	temp2 := dummy2
+
+	temp := head
+
+	for temp != nil {
+		temp1.Next = temp
+		temp1 = temp1.Next
+
+		temp = temp.Next
+		if temp != nil {
+			temp2.Next = temp
+			temp2 = temp2.Next
+			temp = temp.Next
+		}
+	}
+
+	temp1.Next = nil
+	temp2.Next = nil
+
+	temp1.Next = dummy2.Next
+	return dummy1.Next
 }

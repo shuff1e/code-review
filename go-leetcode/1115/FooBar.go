@@ -115,4 +115,77 @@ func bar2(ch,exit chan struct{},n int) {
 	}
 }
 
+/*
+
+func printA(n int,left,right chan struct{}) {
+	for i:=0;i<n;i++ {
+		<- left
+		fmt.Println("A")
+		right <- struct{}{}
+	}
+}
+
+func printB(n int,left,right chan struct{},done chan struct{}) {
+	for i := 0;i<n;i++ {
+		<- left
+		fmt.Println("B")
+		if i != n - 1 {
+			right <- struct{}{}
+		}
+	}
+	close(done)
+}
+
+func main() {
+
+	// A->B->C->D
+
+	n := 5
+	leftMost := make(chan struct{},1)
+	left,right := leftMost,leftMost
+
+	right  = make(chan struct{},1)
+	go printA(n,left,right)
+
+	left = right
+
+	done := make(chan struct{})
+	go printB(n,left,leftMost,done)
+
+	go func(ch chan struct{}) {
+		leftMost <- struct{}{}
+	}(leftMost)
+
+	<- done
+
+}
+
+func daisyChain() {
+	leftMost := make(chan int)
+	left,right := leftMost,leftMost
+
+	n := 10000
+	for i := 0;i<n;i++ {
+		right = make(chan int)
+		go f(left,right)
+		left = right
+	}
+
+	go func(ch chan int) {
+		ch <- 1
+	}(leftMost)
+
+	<- right
+}
+
+func f(left,right chan int) {
+	temp := <-left
+
+	// do sth
+	temp ++
+
+	right <- temp
+}
+
+ */
 

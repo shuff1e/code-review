@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
 
 5604. 最大化网格幸福感
@@ -51,8 +53,144 @@ package main
 
  */
 
-func getMaxGridHappiness(m int, n int, introvertsCount int, extrovertsCount int) int {
+func main() {
+	m := 3
+	n := 1
+	introvertsCount := 2
+	extrovertsCount := 1
+	fmt.Println(getMaxGridHappiness2(m,n,introvertsCount,extrovertsCount))
+}
 
+func getMaxGridHappiness(m int, n int, introvertsCount int, extrovertsCount int) int {
+	// 3^6 = 729
+	// 最多6位
+	// 每一个mask的三进制 表示
+	mask_span := make([][]int,729)
+	for i := 0;i<len(mask_span);i++ {
+		mask_span[i] = make([]int,6)
+	}
+
+	// 上一行的mask，当前处理到的行，剩余的内向人数，剩余的外向人数
+	dp := make([][][][]int,729)
+	for i := 0;i<len(dp);i++ {
+		dp[i] = make([][][]int,6)
+		for j := 0;j<len(dp[i]);j++ {
+			dp[i][j] = make([][]int,7)
+			for k := 0;k<len(dp[i][j]);k++ {
+				dp[i][j][k] = make([]int,7)
+				for h := 0;h<len(dp[i][j][k]);h++ {
+					dp[i][j][k][h] = -1
+				}
+			}
+		}
+	}
+
+	// 每个mask中内向的人的个数
+	nx_inner := make([]int,729)
+	// 每个mask中外向的人的个数
+	wx_inner := make([]int,729)
+
+	// 行内得分，只统计 mask 本身的得分，不包括它与上一行的）
+	score_inner := make([]int,729)
+
+	// 行外得分
+	score_outer := make([][]int,729)
+	for i := 0;i<len(score_outer);i++ {
+		score_outer[i] = make([]int,729)
+	}
+
+	n3 := Pow(3,n)
+
+	for mask := 0 ; mask < n3;mask++ {
+		temp := mask
+		for i := 0;i<n;i++ {
+			mask_span[mask][i] = temp%3
+			temp /= 3
+		}
+
+		for i := 0;i<n;i++ {
+			if mask_span[mask][i] != 0 {
+				if mask_span[mask][i] == 1 {
+					nx_inner[mask] ++
+					score_inner[mask] += 120
+				} else if mask_span[mask][i] == 2 {
+					wx_inner[mask] ++
+					score_inner[mask] += 40
+				}
+				if i >= 1 {
+					score_inner[mask] += calc(mask_span[mask][i],mask_span[mask][i-1])
+				}
+			}
+		}
+
+		// 行外得分
+		for mask0 := 0;mask0<n3;mask0 ++ {
+			for mask1 := 0;mask1<n3;mask1 ++ {
+				score_outer[mask0][mask1] = 0
+				for i := 0;i<n;i++ {
+					score_outer[mask0][mask1] += calc(mask_span[mask0][i],mask_span[mask1][i])
+				}
+			}
+		}
+	}
+
+	return dfs(dp,0,0,m,n3,introvertsCount,extrovertsCount,
+		nx_inner,wx_inner,score_inner,score_outer)
+}
+
+func dfs(dp [][][][]int,mask_last int,row int,allRow,n3 int,nx int,wx int,
+	nx_inner,wx_inner []int,score_inner []int,score_outer [][]int) int {
+	if row == allRow || nx + wx == 0 {
+		return 0
+	}
+	if dp[mask_last][row][nx][wx] != -1 {
+		return dp[mask_last][row][nx][wx]
+	}
+
+	best := 0
+	for mask := 0;mask < n3 ;mask ++ {
+		if nx_inner[mask] > nx || wx_inner[mask] > wx {
+			continue
+		}
+		score := score_inner[mask] + score_outer[mask_last][mask]
+		best = Max(best,score + dfs(dp,mask,row+1,allRow,n3,nx - nx_inner[mask],wx - wx_inner[mask],
+			nx_inner,wx_inner,score_inner,score_outer))
+	}
+	dp[mask_last][row][nx][wx] = best
+	return best
+}
+
+func Max(x,y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
+
+
+func calc(x,y int) int {
+	if x == 0 || y == 0 {
+		return 0
+	}
+	if x == 1 && y == 1 {
+		return -60
+	}
+	if x == 2 && y == 2 {
+		return 40
+	}
+	return -10
+}
+
+func Pow(base,exp int) int {
+	result := 1
+	for exp > 0 {
+		if exp & 1 > 0 {
+			result *= base
+		}
+		base *= base
+		exp >>= 1
+	}
+	return result
 }
 
 /*
@@ -154,3 +292,90 @@ public:
 };
 
  */
+
+func getMaxGridHappiness2(m int, n int, introvertsCount int, extrovertsCount int) int {
+	// 预处理：每一个 mask 的三进制表示
+	mask_span := make([][]int,729)
+	for i := 0;i<len(mask_span);i++ {
+		mask_span[i] = make([]int,6)
+	}
+
+	// dp[位置][轮廓线上的 mask][剩余的内向人数][剩余的外向人数]
+	dp := make([][][][]int,25)
+	for i := 0;i<len(dp);i++ {
+		dp[i] = make([][][]int,729)
+		for j := 0;j<len(dp[i]);j++ {
+			dp[i][j] = make([][]int,7)
+			for k := 0;k<len(dp[i][j]);k++ {
+				dp[i][j][k] = make([]int,7)
+				for h := 0;h<len(dp[i][j][k]);h++ {
+					dp[i][j][k][h] = -1
+				}
+			}
+		}
+	}
+
+	// 预处理：每一个 mask 去除最高位、乘 3、加上新的最低位的结果
+	truncate := make([][]int,729)
+	for i := 0;i<len(truncate);i++ {
+		truncate[i] = make([]int,3)
+	}
+
+	n3 := Pow(3,n)
+
+	highest := n3/3
+
+
+	for mask := 0;mask < n3;mask ++ {
+		temp := mask
+		for i := 0;i<n;i++ {
+			// 与方法一不同的是，这里需要反过来存储，这样 [0] 对应最高位，[n-1] 对应最低位
+			mask_span[mask][n-i-1] = temp%3
+			temp/=3
+		}
+		truncate[mask][0] = mask%highest*3
+		truncate[mask][1] = mask%highest*3 + 1
+		truncate[mask][2] = mask%highest*3 + 2
+	}
+
+	return dfs2(0,0,introvertsCount,extrovertsCount,
+		m,n,dp,truncate,mask_span)
+}
+
+func dfs2(pos int,borderline int,nx int,wx int,m,n int,dp [][][][]int,truncate [][]int,mask_span [][]int) int {
+	if pos == m*n || nx + wx == 0 {
+		return 0
+	}
+
+	if dp[pos][borderline][nx][wx] != -1 {
+		return dp[pos][borderline][nx][wx]
+	}
+
+	y := pos%n
+
+	// 什么都不做
+	best := dfs2(pos+1,truncate[borderline][0],nx,wx,m,n,dp,truncate,mask_span)
+
+	// 放一个内向的人
+	if nx > 0 {
+		temp := 120 + calc(1,mask_span[borderline][0])
+		if y != 0 {
+			temp += calc(1,mask_span[borderline][n-1])
+		}
+		temp += dfs2(pos+1,truncate[borderline][1],nx-1,wx,m,n,dp,truncate,mask_span)
+		best = Max(best,temp)
+	}
+	// 放一个外向的人
+	if wx > 0 {
+		temp := 40 + calc(2,mask_span[borderline][0])
+		if y > 0 {
+			temp += calc(2,mask_span[borderline][n-1])
+		}
+		temp += dfs2(pos+1,truncate[borderline][2],nx,wx-1,m,n,dp,truncate,mask_span)
+		best = Max(best,temp)
+	}
+
+	dp[pos][borderline][nx][wx] = best
+
+	return best
+}

@@ -97,3 +97,39 @@ func (this *Solution) GetRandom() int {
  * obj := Constructor(head);
  * param_1 := obj.GetRandom();
  */
+
+/*
+
+抽取 m 个
+抽取 m 个如何保证等概率，看第一的题解分析，我这里就不讲了
+
+
+//功能：实现从 [1, n] 中等概率的抽取 m 个数字
+
+public static int[] h(int[] data, int m) {
+    int[] reservoir = new int[m];
+    // 1. 初始化：选取 data 前 m 个元素放入蓄水池 res 中
+    for (int i = 0; i < m; i++) {
+        res[i] = data[i];
+    }
+    Random random = new Random();
+    // 2. 以 m/k 的概率选择 第 k 个数字
+    for (int i = m; i < data.length; i++) {
+        int d = random.nextInt(i + 1);
+        //
+        //    3. 如果随机整数落在 [0, m-1] 范围内，则替换蓄水池中的元素
+        //    对于当前元素来说，它有可能替换掉蓄水池内部的任意一个位置的元素
+
+        //    因为 random.nextInt(i + 1) 表示从 [0, i + 1] 这些位置中选择一个位置来作为当前元素的替换位置，
+        //    如果选中蓄水池的位置，表示当前元素能够进入蓄水池，如果没选中，表示当前元素失去了进入蓄水池的机会
+        //    所以蓄水池每个位置被选中的概率为 1 / i+1，而总共有 m 个位置，
+        //    所以对于当前元素来说，它有 m / i+1 的概率能够替换到蓄水池中
+        //    当前节点抽到的位置为 d，如果 d < m，表示当前位置能够进入蓄水池，并且替换掉 d 位置的元素
+
+        if (d < m)
+            res[d] = data[i];
+    }
+    return res;
+}
+
+ */

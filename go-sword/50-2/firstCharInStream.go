@@ -7,21 +7,57 @@ import "fmt"
 // 字符流中只读出前两个字符"go"时，第一个只出现一次的字符是'g'。当从该字
 // 符流中读出前六个字符"google"时，第一个只出现一次的字符是'l'。
 
+/*
 
+type CharStatistic struct {
+	occurrence []int
+	index int
+}
 
+func NewChar() CharStatistic {
+	data := make([]int,256)
+	for i := 0;i<len(data);i++ {
+		data[i] = -1
+	}
+	return CharStatistic{
+		occurrence: data,
+		index: 0,
+	}
+}
 
+func (c *CharStatistic) insert(char byte) {
+	if c.occurrence[char - '0'] == -1 {
+		c.occurrence[char - '0'] = c.index
+	} else {
+		c.occurrence[char - '0'] = -2
+	}
+}
 
+func (c *CharStatistic) firstAppearOnce() byte {
+	result := byte(0)
+	minIndex := 0x7fffffff
+	for i := 0;i<len(c.occurrence);i++ {
+		if c.occurrence[i] > 0 {
+			minIndex = Min(minIndex,c.occurrence[i])
+			result = byte(i)
+		}
+	}
+	return result
+}
 
+func Min(x,y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
 
+func main() {
+	c := NewChar()
 
+}
 
-
-
-
-
-
-
-
+ */
 
 
 const SIZE rune = 256

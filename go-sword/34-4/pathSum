@@ -1,0 +1,183 @@
+package main
+
+import (
+	"fmt"
+)
+
+/*
+437. 路径总和 III
+给定一个二叉树，它的每个结点都存放着一个整数值。
+找出路径和等于给定数值的路径总数。
+路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（可以从父节点到左子节点加上从父节点到右子节点）。
+二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。
+示例：
+root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 15
+      10
+     /  \
+    5   -3
+   / \    \
+  3   2   11
+ / \   \
+3  -2   1
+返回 3。和等于 15 的路径有:
+1.  10 -> 5 -> 2 -> 1
+10 -> -3
+2.  10 -> 5 -> 3
+10 -> -3
+3.  10 -> 5
+*/
+
+func main() {
+	node1 := &TreeNode{Val: 10}
+	node2 := &TreeNode{Val: 5}
+	node3 := &TreeNode{Val: -3}
+	node4 := &TreeNode{Val: 3}
+	node5 := &TreeNode{Val: 2}
+	node7 := &TreeNode{Val: 11}
+	//
+	node8 := &TreeNode{Val: 3}
+	node9 := &TreeNode{Val: -2}
+	node10 := &TreeNode{Val: 1}
+	connectNodes(node1, node2, node3)
+	connectNodes(node2, node4, node5)
+	connectNodes(node3, nil, node7)
+	connectNodes(node4, node8, node9)
+	connectNodes(node5, nil, node10)
+
+	result1 := pathSum(node1, 15)
+	result2 := pathSum2(node1, 15)
+	fmt.Println(result1, result2, result1 == result2)
+}
+
+func connectNodes(p, left, right *TreeNode) {
+	if left != nil {
+		p.Left = left
+	}
+	if right != nil {
+		p.Right = right
+	}
+}
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// sum 没有出现，dict[sum] = level，记录和第一次出现的位置
+// if dict.contains(sum-k) 说明找到了，然后 count ++
+
+// 如果sum是在当前层第一次出现的，删除sum
+
+func pathSum(root *TreeNode, sum int) int {
+	if root == nil {
+		return 0
+	}
+	dict := map[int]int{}
+	// index,count
+	dict[0] = 1
+	count, _ := help(root, sum, 0, dict)
+	return count
+}
+
+func help(root *TreeNode, k, sum int, dict map[int]int) (int, map[int]int) {
+	if root == nil {
+		return 0, map[int]int{}
+	}
+	sum += root.Val
+
+	res := 0
+	// 以当前节点为结束的节点
+	res += dict[sum-k]
+
+	dict[sum] = dict[sum] + 1
+
+	resLeft, mapLeft := help(root.Left, k, sum, dict)
+	resRight, mapRight := help(root.Right, k, sum, dict)
+	res += resLeft
+	res += resRight
+
+	for k1, v1 := range mapLeft {
+		k2 := k - (k1 - sum + root.Val - sum)
+		if v2, ok := mapRight[k2]; ok {
+			res += v1 * v2
+		}
+	}
+
+	retMap := make(map[int]int, 0)
+	retMap[sum] = retMap[sum] + 1
+
+	for key, value := range mapLeft {
+		retMap[key] = retMap[key] + value
+	}
+
+	for key, value := range mapRight {
+		retMap[key] = retMap[key] + value
+	}
+
+	dict[sum] = dict[sum] - 1
+
+	return res, retMap
+}
+
+func pathSum2(root *TreeNode, sum int) int {
+	if root == nil {
+		return 0
+	}
+	count, _ := help2(root, sum, 0)
+	return count
+}
+
+func help2(root *TreeNode, k, sum int) (int, map[int]int) {
+	if root == nil {
+		return 0, map[int]int{}
+	}
+	sum += root.Val
+
+	res := 0
+
+	// 以当前节点为开头的链
+
+	if root.Val == k {
+		res++
+	}
+
+	resLeft, mapLeft := help2(root.Left, k, sum)
+	resRight, mapRight := help2(root.Right, k, sum)
+	res += resLeft
+	res += resRight
+
+	for key, value := range mapLeft {
+		if key-sum+root.Val == k {
+			res += value
+		}
+	}
+
+	for key, value := range mapRight {
+		if key-sum+root.Val == k {
+			res += value
+		}
+	}
+
+	for k1, v1 := range mapLeft {
+		k2 := k - (k1 - sum + root.Val - sum)
+		if v2, ok := mapRight[k2]; ok {
+			res += v1 * v2
+		}
+	}
+
+	retMap := make(map[int]int, 0)
+	retMap[sum] = retMap[sum] + 1
+
+	for key, value := range mapLeft {
+		retMap[key] = retMap[key] + value
+	}
+
+	for key, value := range mapRight {
+		retMap[key] = retMap[key] + value
+	}
+
+	//dict[sum] = dict[sum] - 1
+
+	return res, retMap
+}

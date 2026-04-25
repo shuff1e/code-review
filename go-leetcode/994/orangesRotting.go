@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
 994. 腐烂的橘子
 
@@ -30,6 +32,79 @@ n == grid[i].length
 grid[i][j] 的值为 0、1 或 2。
 */
 
+func main() {
+	grid := [][]int{
+		{2, 1, 1},
+		{1, 1, 0},
+		{0, 1, 1}}
+	fmt.Println(orangesRotting(grid))
+
+	grid = [][]int{
+		{2, 1, 1},
+		{0, 1, 1},
+		{1, 0, 1}}
+	fmt.Println(orangesRotting(grid))
+
+	grid = [][]int{
+		{0, 2},
+	}
+	fmt.Println(orangesRotting(grid))
+}
+
 func orangesRotting(grid [][]int) int {
-	return 0
+
+	if len(grid) == 0 || len(grid[0]) == 0 {
+		return 0
+	}
+
+	rotten := [][2]int{}
+	freshCount := 0
+
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[i]); j++ {
+			if grid[i][j] == 2 {
+				rotten = append(rotten, [2]int{i, j})
+			}
+			if grid[i][j] == 1 {
+				freshCount++
+			}
+		}
+	}
+
+	edges := [][2]int{
+		{0, 1},
+		{0, -1},
+		{1, 0},
+		{-1, 0},
+	}
+
+	count := 0
+	for {
+		tempRotten := [][2]int{}
+		for i := 0; i < len(rotten); i++ {
+			for j := 0; j < len(edges); j++ {
+				row := rotten[i][0] + edges[j][0]
+				col := rotten[i][1] + edges[j][1]
+
+				if row >= 0 && row < len(grid) && col >= 0 && col < len(grid[0]) {
+					if grid[row][col] == 1 {
+						tempRotten = append(tempRotten, [2]int{row, col})
+						freshCount--
+						grid[row][col] = 2
+					}
+				}
+			}
+		}
+		if len(tempRotten) == 0 {
+			break
+		}
+		count++
+		rotten = tempRotten
+	}
+
+	if freshCount > 0 {
+		return -1
+	}
+
+	return count
 }

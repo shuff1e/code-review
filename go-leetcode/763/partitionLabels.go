@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
 763. 划分字母区间
 
@@ -22,6 +24,35 @@ package main
 s 仅包含小写英文字母。
 */
 
+func main() {
+	str := "ababcbacadefegdehijhklij"
+	fmt.Println(partitionLabels(str))
+
+	str = "eccbbbbdec"
+	fmt.Println(partitionLabels(str))
+
+	str = "abab"
+	fmt.Println(partitionLabels(str))
+}
+
 func partitionLabels(s string) []int {
-	return nil
+	ret := []int{}
+
+	dict := map[byte]int{}
+	for i := 0; i < len(s); i++ {
+		dict[s[i]] = i
+	}
+
+	start, end := 0, 0
+	for i := 0; i < len(s); i++ {
+		if end < dict[s[i]] {
+			end = dict[s[i]]
+		}
+		if end == i {
+			ret = append(ret, end-start+1)
+			start = end + 1
+		}
+	}
+
+	return ret
 }

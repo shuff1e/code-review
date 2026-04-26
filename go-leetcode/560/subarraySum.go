@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
 560. 和为 K 的子数组
 
@@ -21,6 +23,35 @@ package main
 -10^7 <= k <= 10^7
 */
 
+func main() {
+	nums := []int{1, 1, 1}
+	k := 2
+	ret := subarraySum(nums, k)
+	fmt.Println(ret)
+
+	nums = []int{1, 2, 3}
+	k = 3
+	ret = subarraySum(nums, k)
+	fmt.Println(ret)
+
+	nums = []int{1, -1, 1, -1}
+	k = 0
+	ret = subarraySum(nums, k)
+	fmt.Println(ret)
+}
+
 func subarraySum(nums []int, k int) int {
-	return 0
+	dict := map[int]int{
+		0: 1,
+	}
+	result := 0
+	sum := 0
+
+	for i := 0; i < len(nums); i++ {
+		sum += nums[i]
+		result += dict[sum-k]
+		dict[sum]++
+	}
+
+	return result
 }
